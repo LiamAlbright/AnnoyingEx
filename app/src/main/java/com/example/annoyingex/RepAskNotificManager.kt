@@ -22,7 +22,7 @@ class RepAskNotificManager(
         createFunChannel()
     }
 
-    fun postItNote() {
+    fun postItNote(textMess: List<String>) {
         val dealsIntent = Intent(context, AskStuffActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("hello", "word")
@@ -32,8 +32,8 @@ class RepAskNotificManager(
 
         val notification = NotificationCompat.Builder(context, FUN_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Post Malone")
-            .setContentText("You a SUNNN FLOOOOWWWWWAAAAAAAAAA ${Random.nextInt()}")
+            .setContentTitle("Jane Smith")
+            .setContentText(textMess[Random.nextInt(0, (textMess.size)-1)])
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingDealsIntent)
             .setAutoCancel(true)
@@ -47,7 +47,7 @@ class RepAskNotificManager(
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Fun Notifications"
-            val descriptionText = "All Msgs from a great autotune voiced dude"
+            val descriptionText = "All Msgs from a....old Friend"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(FUN_CHANNEL_ID, name, importance).apply {
                 description = descriptionText
