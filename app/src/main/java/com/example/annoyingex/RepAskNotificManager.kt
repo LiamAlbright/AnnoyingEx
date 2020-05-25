@@ -23,19 +23,21 @@ class RepAskNotificManager(
     }
 
     fun postItNote(textMess: List<String>) {
-        val dealsIntent = Intent(context, AskStuffActivity::class.java).apply {
+
+        val displayText = checkListTexts(textMess)
+        val askIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("hello", "word")
+            putExtra("value1", displayText)
         }
 
-        val pendingDealsIntent = PendingIntent.getActivity(context, 0, dealsIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingAsksIntent = PendingIntent.getActivity(context, 0, askIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = NotificationCompat.Builder(context, FUN_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_sentiment_gf)
             .setContentTitle("Jane Smith")
-            .setContentText(textMess[Random.nextInt(0, (textMess.size)-1)])
+            .setContentText(displayText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingDealsIntent)
+            .setContentIntent(pendingAsksIntent)
             .setAutoCancel(true)
             .build()
 
@@ -46,7 +48,7 @@ class RepAskNotificManager(
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Fun Notifications"
+            val name = "Message Notifications"
             val descriptionText = "All Msgs from a....old Friend"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(FUN_CHANNEL_ID, name, importance).apply {
@@ -55,7 +57,13 @@ class RepAskNotificManager(
             notificationManagerCompat.createNotificationChannel(channel)
         }
     }
-
+    private fun checkListTexts(textList: List<String>): String {
+        var strToRet = textList[Random.nextInt(0, (textList.size)-1)]
+        if (textList.isNullOrEmpty()) {
+            strToRet= "unable to retrieve message"
+        }
+        return strToRet
+    }
     companion object {
         const val FUN_CHANNEL_ID = "FUNCHANNELID"
     }

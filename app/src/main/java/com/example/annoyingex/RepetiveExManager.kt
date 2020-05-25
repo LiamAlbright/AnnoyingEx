@@ -1,6 +1,7 @@
 package com.example.annoyingex
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.work.*
 import java.util.concurrent.TimeUnit
 
@@ -14,18 +15,18 @@ class RepetiveExManager(private val context: Context)  {
             stopWork()
         }
 
+        //setting the messages list to a data object for setInputData
         val data = Data.Builder()
         for (x in 0 until (messages.size)){
             data.putInt(messages[x], x)
         }
-        //val myData: Data = workDataOf(messages)
-       // makeIntoPairs(messages)
+
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresCharging(true)
             .build()
 
-        val workRequest = PeriodicWorkRequestBuilder<TextAlotWorker>(15, TimeUnit.MINUTES)
+        val workRequest = PeriodicWorkRequestBuilder<TextAlotWorker>(20, TimeUnit.MINUTES)
             .setInputData(data.build())
             .setInitialDelay(5000, TimeUnit.MILLISECONDS)
             .setConstraints(constraints)
@@ -34,20 +35,6 @@ class RepetiveExManager(private val context: Context)  {
 
         workManager.enqueue(workRequest)
     }
-
-    private fun makeIntoPairs(mesText: List<String>): List<Pair<String, Int>> {
-        println(mesText.size)
-        val other: List<Int> = emptyList()
-        val otherMut  =   other.toMutableList()
-        for (x in 0..mesText.size){
-            print(x)
-            otherMut.add(x)
-        }
-        val pairs = mesText zip otherMut
-        println("Test ZIP"+pairs)
-        return(pairs)
-    }
-
     private fun isRepAskRunning(): Boolean {
         return when (workManager.getWorkInfosByTag(ASK_WORK_REQUEST_TAG).get().firstOrNull()?.state) {
             WorkInfo.State.RUNNING,

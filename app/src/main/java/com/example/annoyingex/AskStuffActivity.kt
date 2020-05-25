@@ -10,7 +10,7 @@ class AskStuffActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stuff)
 
-        val someDataFromNotification = intent.getStringExtra("hello")
+        val someDataFromNotification = intent.getStringExtra("value1")
 
         tvInfo.text = someDataFromNotification
     }

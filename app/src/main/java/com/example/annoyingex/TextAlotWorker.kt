@@ -11,13 +11,13 @@ class TextAlotWorker(private val context: Context, workParams: WorkerParameters)
         private set
 
     override fun doWork(): Result {
-       // askApp.askNotificationManager.postItNote()
-        askNotificationManager = RepAskNotificManager(context)
-        val textInput = getInputData().keyValueMap.keys.toList()
-    //    Log.i("liam", "Test there yet!!!!?????!!!")
 
-        //Log.i("liam", "Test we there yet!!!!?????!!!")
+        askNotificationManager = RepAskNotificManager(context)
+
+        val textInput = getInputData().keyValueMap.keys.toList()
+
         askNotificationManager.postItNote(textInput)
+
         return Result.success()
     }
 }
